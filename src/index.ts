@@ -15,6 +15,10 @@ export async function main(options: ApplicationConfig = {}) {
 }
 
 if (require.main === module) {
+  const corsOrigins = process.env.CORS_ORIGINS ?? 'http://localhost:8000';
+  const corsArgs = corsOrigins.split(',').map((value: string) => {
+    return value.trim();
+  });
   // Run the application
   const config = {
     rest: {
@@ -29,6 +33,14 @@ if (require.main === module) {
       openApiSpec: {
         // useful when used with OpenAPI-to-GraphQL to locate your application
         setServersFromRequest: true,
+      },
+      cors: {
+        origin: corsArgs,
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+        preflightContinue: false,
+        optionsSuccessStatus: 204,
+        maxAge: 86400,
+        credentials: true,
       },
     },
   };
