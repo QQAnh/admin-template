@@ -1,4 +1,4 @@
-import {inject} from '@loopback/core';
+import {composeInterceptors, inject, intercept, Interceptor} from '@loopback/core';
 import {
   Request,
   RestBindings,
@@ -6,7 +6,22 @@ import {
   response,
   ResponseObject,
 } from '@loopback/rest';
-
+// const log: Interceptor = async (invocationCtx, next) => {
+//   console.log('log: before-' + invocationCtx.methodName);
+//   // Wait until the interceptor/method chain returns
+//   const result = await next();
+//   console.log('log: after-' + invocationCtx.methodName);
+//   return result;
+// };
+//
+// const logError: Interceptor = async (invocationCtx, next) => {
+//   try {
+//     await next();
+//   } catch (err) {
+//     console.error('[Log Error]: ' + invocationCtx.source);
+//     throw err;
+//   }
+// };
 /**
  * OpenAPI response for ping()
  */
@@ -37,13 +52,20 @@ const PING_RESPONSE: ResponseObject = {
 /**
  * A simple controller to bounce back http requests
  */
+// const interceptor = composeInterceptors(
+//   log,
+//   logError,
+// );
+// @intercept(interceptor)
 export class PingController {
   constructor(@inject(RestBindings.Http.REQUEST) private req: Request) {}
 
   // Map to `GET /ping`
   @get('/ping')
   @response(200, PING_RESPONSE)
-  ping(): object {
+  ping(): Object {
+    throw new Error('Not implemented')
+
     // Reply with a greeting, the current time, the url, and request headers
     return {
       greeting: 'Hello from LoopBack',

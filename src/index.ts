@@ -1,11 +1,11 @@
 import {ApplicationConfig, AdminTemplateApplication} from './application';
-
 export * from './application';
 
 export async function main(options: ApplicationConfig = {}) {
   const app = new AdminTemplateApplication(options);
   await app.boot();
   await app.start();
+  console.log('asdasd')
 
   const url = app.restServer.url;
   console.log(`Server is running at ${url}`);

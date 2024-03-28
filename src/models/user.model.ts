@@ -34,6 +34,27 @@ export class User extends Entity {
   verificationToken?: string;
 
   @property({
+    type: 'string',
+  })
+  resetKey?: string;
+
+  @property({
+    type: 'number',
+    default: 0
+  })
+  resetCount: number;
+
+  @property({
+    type: 'string',
+  })
+  resetTimestamp: string;
+
+  @property({
+    type: 'string',
+  })
+  resetKeyTimestamp: string;
+
+  @property({
     type: 'date',
     default: () => new Date()
   })

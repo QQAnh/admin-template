@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {inject, Getter} from '@loopback/core';
 import {DefaultCrudRepository, repository, HasOneRepositoryFactory} from '@loopback/repository';
 import {MongoDataSource} from '../datasources';
@@ -39,5 +40,25 @@ export class UserRepository extends DefaultCrudRepository<
       // logic before delete
     })
     return modelClass;
+  }
+
+  async findCredentials(
+    userId: typeof User.prototype.id,
+  ): Promise<UserCredential | undefined> {
+    return this.userCredential(userId)
+      .get()
+      .catch(err => {
+        if (err.code === 'ENTITY_NOT_FOUND') return undefined;
+        throw err;
+      });
+  }
+
+  async updateCredentials(
+    userId: typeof User.prototype.id,
+    password: string
+  ): Promise<any | undefined> {
+    return this.userCredential(userId).patch({
+      password: password
+    })
   }
 }
